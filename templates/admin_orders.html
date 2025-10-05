@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - All Orders</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
+        :root {
+            --bg-color: #1a1a1a;
+            --card-color: #2c2c2c;
+            --primary-text: #ffffff;
+            --secondary-text: #b3b3b3;
+            --accent-color: #f39c12;
+            --border-radius: 12px;
+        }
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            text-align: center;
+            font-size: 3em;
+        }
+        .order-card {
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+        .order-header {
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .order-header h2 {
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+        }
+        .order-header span {
+            font-size: 0.9em;
+            color: var(--secondary-text);
+        }
+        .customer-details p, .order-items ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .customer-details p {
+            margin-bottom: 5px;
+        }
+        .order-items {
+            margin-top: 20px;
+        }
+        .order-items h3 {
+            margin-bottom: 10px;
+        }
+        .order-items li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #444;
+        }
+        .order-items li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>All Customer Orders</h1>
+
+        {% for order in all_orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <h2>Order #{{ order['id'] }}</h2>
+                <span>{{ order['order_date'] }}</span>
+            </div>
+            <div class="customer-details">
+                <p><strong>Name:</strong> {{ order['customer_name'] }}</p>
+                <p><strong>Phone:</strong> {{ order['customer_phone'] }}</p>
+                <p><strong>Address:</strong> {{ order['customer_address'] }}</p>
+            </div>
+            <div class="order-items">
+                <h3>Items Ordered:</h3>
+                <ul>
+                    {% for item in all_items if item['order_id'] == order['id'] %}
+                        <li>
+                            <span>{{ item['item_name'] }} (x{{ item['quantity'] }})</span>
+                            <span>₹{{ item['price'] * item['quantity'] }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% else %}
+            <p style="text-align:center;">No orders have been placed yet.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

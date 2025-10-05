@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Sandeep Restaurant</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #1a1a1a;
+            --card-color: #2c2c2c;
+            --primary-text: #ffffff;
+            --secondary-text: #b3b3b3;
+            --accent-color: #f39c12;
+            --green-color: #2ecc71;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            grid-column: 1 / -1;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            font-size: 3.5em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .menu-category h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            color: var(--primary-text);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--accent-color);
+        }
+        
+        .menu-items-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .menu-item {
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .item-details h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+
+        .item-details p {
+            margin: 0 0 15px 0;
+            color: var(--secondary-text);
+            font-size: 0.95em;
+            flex-grow: 1;
+        }
+
+        .item-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-price {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--green-color);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #27ae60;
+            transform: scale(1.05);
+        }
+
+        .cart-section {
+            background-color: var(--card-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 40px;
+            height: fit-content;
+        }
+
+        .cart-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2em;
+            text-align: center;
+            margin-top: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 15px;
+        }
+
+        .cart-items {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #444;
+            font-size: 1.05em;
+        }
+        .cart-item span:last-child {
+            font-weight: 700;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 1.6em;
+            font-weight: 700;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px dashed #555;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            background-color: var(--accent-color);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .checkout-btn:hover {
+            background-color: #e67e22;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Our Exquisite Menu</h1>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-category">
+                <h2>Appetizers</h2>
+                <div class="menu-items-list">
+                    {% for item in appetizers %}
+                    <div class="menu-item">
+                        <div class="item-details">
+                            <h3>{{ item['name'] }}</h3>
+                            <p>{{ item['description'] }}</p>
+                        </div>
+                        <div class="item-action">
+                             <span class="item-price">₹{{ item['price'] }}</span>
+                             <button class="add-to-cart-btn">Add</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="menu-category">
+                <h2>Main Course</h2>
+                 <div class="menu-items-list">
+                    {% for item in main_courses %}
+                    <div class="menu-item">
+                        <div class="item-details">
+                            <h3>{{ item['name'] }}</h3>
+                            <p>{{ item['description'] }}</p>
+                        </div>
+                        <div class="item-action">
+                             <span class="item-price">₹{{ item['price'] }}</span>
+                             <button class="add-to-cart-btn">Add</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="menu-category">
+                <h2>Breads & Rice</h2>
+                 <div class="menu-items-list">
+                    {% for item in breads %}
+                    <div class="menu-item">
+                        <div class="item-details">
+                            <h3>{{ item['name'] }}</h3>
+                            <p>{{ item['description'] }}</p>
+                        </div>
+                        <div class="item-action">
+                             <span class="item-price">₹{{ item['price'] }}</span>
+                             <button class="add-to-cart-btn">Add</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-section">
+            <h2>Your Cart</h2>
+            <ul class="cart-items"></ul>
+            <div class="cart-total">
+                Total: ₹0
+            </div>
+            <a href="/checkout" class="checkout-btn" style="text-align: center; text-decoration: none;">Proceed to Checkout</a>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

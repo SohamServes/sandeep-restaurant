@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandeep Restaurant - Welcome</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .hero-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto-format&fit=crop') no-repeat center center/cover;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5em;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: #f39c12;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .cta-button:hover {
+            background-color: #e67e22;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1>Savor the Flavor</h1>
+            <p>Welcome to Sandeep Restaurant. Discover an unforgettable culinary experience with our finest dishes, available for you to order online with ease.</p>
+            <a href="/menu" class="cta-button">View Our Menu</a>
+        </div>
+    </div>
+</body>
+</html>
