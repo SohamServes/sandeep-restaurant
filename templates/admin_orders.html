@@ -21,7 +21,7 @@
             background-color: var(--bg-color);
             color: var(--primary-text);
             margin: 0;
-            padding: 40px;
+            padding: 20px;
         }
         .navbar {
             display: flex;
@@ -127,6 +127,31 @@
         .delete-btn:hover {
             background-color: #c0392b;
         }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+                border-radius: 0;
+                margin-bottom: 1rem;
+            }
+            .navbar .logo {
+                margin-bottom: 0.5rem;
+            }
+            .container {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 2.2em;
+            }
+            .order-card {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -139,10 +164,8 @@
             <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
-
     <div class="container">
         <h1>All Customer Orders</h1>
-
         {% for order in all_orders %}
         <div class="order-card">
             <div class="order-header">
@@ -165,7 +188,6 @@
                     {% endfor %}
                 </ul>
             </div>
-            
             <form action="{{ url_for('delete_order', id=order['id']) }}" method="post" class="delete-form">
                 <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this order?');">Delete Order</button>
             </form>
