@@ -5,59 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Manage Menu</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
         :root {
-            --primary-color: #d32f2f;
-            --secondary-color: #f1f1f1;
-            --background-color: #f9f9f9;
-            --text-color: #333;
-            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --bg-color: #1a1a1a;
+            --card-color: #2c2c2c;
+            --primary-text: #ffffff;
+            --secondary-text: #b3b3b3;
+            --accent-color: #f39c12;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            --blue-color: #1e88e5;
+            --red-color: #e74c3c;
         }
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
             margin: 0;
+            padding: 20px;
         }
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 1rem 2rem;
-            background-color: #fff;
-            box-shadow: var(--card-shadow);
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
         }
         .navbar .logo {
+            font-family: 'Playfair Display', serif;
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--accent-color);
         }
         .navbar a {
             text-decoration: none;
-            color: var(--text-color);
+            color: var(--secondary-text);
             margin-left: 1.5rem;
             font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .navbar a:hover {
+            color: var(--accent-color);
         }
         .container {
             padding: 2rem;
             max-width: 1000px;
-            margin: 2rem auto;
-            background-color: #fff;
+            margin: 0 auto;
+            background-color: var(--card-color);
             border-radius: 8px;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--box-shadow);
+        }
+        .table-container {
+            overflow-x: auto;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--secondary-color);
+            border-bottom: 2px solid var(--accent-color);
             padding-bottom: 1rem;
         }
         .header h1 {
-            color: var(--primary-color);
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
             margin: 0;
-            font-size: 1.8rem;
         }
         .btn {
             padding: 0.75rem 1.5rem;
@@ -66,62 +80,45 @@
             cursor: pointer;
             font-weight: 600;
             text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        .btn:hover {
+            transform: scale(1.05);
         }
         .btn-primary {
-            background-color: var(--primary-color);
-            color: #fff;
-        }
-        /* Make the table container scrollable */
-        .table-container {
-            overflow-x: auto;
+            background-color: var(--accent-color);
+            color: var(--primary-text);
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 600px; /* Prevents table from squishing too much */
+            min-width: 600px;
         }
         th, td {
             padding: 1rem;
             text-align: left;
-            border-bottom: 1px solid var(--secondary-color);
+            border-bottom: 1px solid #444;
         }
         thead {
-            background-color: #333;
-            color: #fff;
+            background-color: #3d3d3d;
         }
         .actions {
             display: flex;
         }
-        .actions .btn, .actions form {
+        .actions .btn, .actions button {
             margin-right: 0.5rem;
+            padding: 0.5rem 1rem;
         }
-        .btn-edit { background-color: #1e88e5; color: #fff; }
-        .btn-delete { background-color: #616161; color: #fff; }
+        .btn-edit { background-color: var(--blue-color); color: #fff; }
+        .btn-delete { background-color: var(--red-color); color: #fff; }
 
-        /* 2. NEW: Media query for mobile screens */
         @media (max-width: 768px) {
-            body {
-                padding: 0;
-            }
-            .navbar {
-                flex-direction: column;
-                padding: 1rem;
-            }
-            .navbar .logo {
-                margin-bottom: 0.5rem;
-            }
-            .container {
-                margin: 0;
-                padding: 1rem;
-                border-radius: 0;
-                box-shadow: none;
-            }
-            .header {
-                flex-direction: column;
-            }
-            .header h1 {
-                margin-bottom: 1rem;
-            }
+            body { padding: 0; }
+            .navbar { flex-direction: column; padding: 1rem; border-radius: 0; }
+            .navbar .logo { margin-bottom: 0.5rem; }
+            .container { margin: 0; padding: 1rem; border-radius: 0; box-shadow: none; }
+            .header { flex-direction: column; }
+            .header h1 { margin-bottom: 1rem; }
         }
     </style>
 </head>
