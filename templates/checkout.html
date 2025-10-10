@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Sandeep Restaurant</title>
+    <title>Customer Checkout</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
-
         :root {
             --bg-color: #1a1a1a;
             --card-color: #2c2c2c;
@@ -16,56 +15,43 @@
             --border-radius: 12px;
             --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
         }
-
         body {
             font-family: 'Lato', sans-serif;
-            margin: 0;
-            padding: 40px;
             background-color: var(--bg-color);
             color: var(--primary-text);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            margin: 0;
+            padding: 20px;
         }
-
         .container {
-            max-width: 900px;
+            max-width: 500px;
             width: 100%;
             background-color: var(--card-color);
             padding: 40px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
         }
-
         .header h1 {
             font-family: 'Playfair Display', serif;
             color: var(--accent-color);
             text-align: center;
-            font-size: 3em;
+            font-size: 2.5em;
             margin-top: 0;
             margin-bottom: 30px;
         }
-
-        .checkout-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
         .form-group {
             margin-bottom: 20px;
         }
-
         .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 700;
             color: var(--secondary-text);
         }
-
-        .form-group input,
-        .form-group textarea {
+        .form-group input {
             width: 100%;
             padding: 12px;
             background-color: #3d3d3d;
@@ -75,49 +61,10 @@
             font-size: 1em;
             transition: border-color 0.3s ease;
         }
-        
-        .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group input:focus {
             outline: none;
             border-color: var(--accent-color);
         }
-
-        .order-summary {
-            background-color: #3d3d3d;
-            padding: 20px;
-            border-radius: var(--border-radius);
-        }
-
-        .order-summary h2 {
-            font-family: 'Playfair Display', serif;
-            margin-top: 0;
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 10px;
-        }
-        
-        .order-summary ul {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-
-        .order-summary li {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            color: var(--secondary-text);
-        }
-
-        .summary-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.4em;
-            font-weight: 700;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 2px dashed #555;
-        }
-
         .place-order-btn {
             display: block;
             width: 100%;
@@ -132,12 +79,10 @@
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
-
         .place-order-btn:hover {
             background-color: #e67e22;
             transform: scale(1.02);
         }
-
         .back-link {
             display: block;
             text-align: center;
@@ -153,62 +98,32 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Finalize Your Order</h1>
+            <h1>Customer Checkout</h1>
         </div>
         <form action="/submit_order" method="post">
-            <div class="checkout-layout">
-                <div class="customer-details">
-                    <div class="form-group">
-                        <label for="fullName">Full Name</label>
-                        <input type="text" id="fullName" name="fullName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" required pattern="\d{10}" title="Please enter a 10-digit phone number" maxlength="10">
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Delivery Address</label>
-                        <textarea id="address" name="address" rows="4"></textarea>
-                    </div>
-                </div>
-                <div class="order-summary">
-                    <h2>Order Summary</h2>
-                    <ul id="order-items-list"></ul>
-                    <div class="summary-total">
-                        <span>Total</span>
-                        <span id="order-total">₹0</span>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="fullName">Name</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required pattern="\d{10}" title="Please enter a 10-digit phone number" maxlength="10">
+            </div>
+            <div class="form-group">
+                <label for="tableNumber">Table Number</label>
+                <input type="number" id="tableNumber" name="tableNumber" required>
             </div>
             <input type="hidden" name="cartData" id="cartData">
-            <button type="submit" class="place-order-btn">Place Order</button>
+            <button type="submit" class="place-order-btn">Confirm Order</button>
         </form>
         <a href="/menu" class="back-link">← Back to Menu</a>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const orderItemsList = document.getElementById('order-items-list');
-            const orderTotalElement = document.getElementById('order-total');
             const cartDataInput = document.getElementById('cartData');
             const cartString = localStorage.getItem('cart');
-            const cart = JSON.parse(cartString) || [];
-
             cartDataInput.value = cartString;
-
-            let total = 0;
-            if (cart.length > 0) {
-                cart.forEach(item => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<span>${item.name} (x${item.quantity})</span><span>₹${item.price * item.quantity}</span>`;
-                    orderItemsList.appendChild(li);
-                    total += item.price * item.quantity;
-                });
-            } else {
-                orderItemsList.innerHTML = '<li>Your cart is empty.</li>';
-            }
-
-            orderTotalElement.textContent = `₹${total}`;
         });
     </script>
 </body>

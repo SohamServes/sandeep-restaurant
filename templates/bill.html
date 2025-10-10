@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill #{{ order['id'] }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
+        :root {
+            --bg-color: #1a1a1a;
+            --card-color: #2c2c2c;
+            --primary-text: #ffffff;
+            --secondary-text: #b3b3b3;
+            --accent-color: #f39c12;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .bill-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-color);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        .bill-header {
+            text-align: center;
+            border-bottom: 2px dashed var(--accent-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .bill-header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        .bill-header p {
+            margin: 0.5rem 0 0;
+            color: var(--secondary-text);
+        }
+        .customer-info {
+            margin-bottom: 1.5rem;
+            color: var(--secondary-text);
+        }
+        .customer-info strong {
+            color: var(--primary-text);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        thead {
+            background-color: #3d3d3d;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+        }
+        tbody tr td {
+            border-bottom: 1px solid #444;
+            color: var(--secondary-text);
+        }
+        .grand-total {
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+        .print-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--accent-color);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .print-btn:hover {
+            background-color: #e67e22;
+        }
+        @media print {
+            body { 
+                background: #fff; 
+                color: #000;
+                padding: 0;
+            }
+            .print-btn { display: none; }
+            .bill-container { 
+                box-shadow: none; 
+                border: 1px solid #ccc; 
+                padding: 0;
+            }
+            :root {
+                --accent-color: #000;
+            }
+            thead {
+                background-color: #eee;
+                -webkit-print-color-adjust: exact; /* Chrome, Safari */
+                color-adjust: exact; /* Firefox */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bill-container">
+        <div class="bill-header">
+            <h1>Sandeep Restaurant Bill</h1>
+            <p>Bill No: {{ order['id'] }}</p>
+        </div>
+        <div class="customer-info">
+            <p><strong>Customer:</strong> {{ order['customer_name'] }} | <strong>Phone:</strong> {{ order['customer_phone'] }} | <strong>Table:</strong> {{ order['table_number'] }}</p>
+            <p><strong>Date:</strong> {{ order['order_date'] }}</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Price per item</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item['item_name'] }}</td>
+                    <td>{{ item['quantity'] }}</td>
+                    <td>₹{{ "%.2f"|format(item['price']) }}</td>
+                    <td>₹{{ "%.2f"|format(item['price'] * item['quantity']) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="grand-total">
+            Grand Total: ₹{{ "%.2f"|format(grand_total) }}
+        </div>
+        <button class="print-btn" onclick="window.print();">Print Bill</button>
+    </div>
+</body>
+</html>  

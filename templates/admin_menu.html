@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Manage Menu</title>
     <style>
+        /* (The first part of the style block is the same) */
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
         :root {
             --bg-color: #1a1a1a;
@@ -16,6 +17,7 @@
             --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
             --blue-color: #1e88e5;
             --red-color: #e74c3c;
+            --green-color: #2ecc71; /* Added green for success messages */
         }
         body {
             font-family: 'Lato', sans-serif;
@@ -24,94 +26,39 @@
             margin: 0;
             padding: 20px;
         }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background-color: var(--card-color);
-            border-radius: var(--border-radius);
-            margin-bottom: 2rem;
-        }
-        .navbar .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-color);
-        }
-        .navbar a {
-            text-decoration: none;
-            color: var(--secondary-text);
-            margin-left: 1.5rem;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-        .navbar a:hover {
-            color: var(--accent-color);
-        }
-        .container {
-            padding: 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: var(--card-color);
-            border-radius: 8px;
-            box-shadow: var(--box-shadow);
-        }
-        .table-container {
-            overflow-x: auto;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 1rem;
-        }
-        .header h1 {
-            font-family: 'Playfair Display', serif;
-            color: var(--accent-color);
-            margin: 0;
-        }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-            transition: transform 0.2s ease;
-        }
-        .btn:hover {
-            transform: scale(1.05);
-        }
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: var(--primary-text);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
-        }
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #444;
-        }
-        thead {
-            background-color: #3d3d3d;
-        }
-        .actions {
-            display: flex;
-        }
-        .actions .btn, .actions button {
-            margin-right: 0.5rem;
-            padding: 0.5rem 1rem;
-        }
+        /* (Navbar, container, header, btn, table styles are the same) */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-color: var(--card-color); border-radius: var(--border-radius); margin-bottom: 2rem; }
+        .navbar .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--accent-color); }
+        .navbar a { text-decoration: none; color: var(--secondary-text); margin-left: 1.5rem; font-weight: 600; transition: color 0.3s ease; }
+        .navbar a:hover { color: var(--accent-color); }
+        .container { padding: 2rem; max-width: 1000px; margin: 0 auto; background-color: var(--card-color); border-radius: 8px; box-shadow: var(--box-shadow); }
+        .table-container { overflow-x: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 1rem; }
+        .header h1 { font-family: 'Playfair Display', serif; color: var(--accent-color); margin: 0; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; text-decoration: none; transition: transform 0.2s ease; }
+        .btn:hover { transform: scale(1.05); }
+        .btn-primary { background-color: var(--accent-color); color: var(--primary-text); }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #444; }
+        thead { background-color: #3d3d3d; }
+        .actions { display: flex; }
+        .actions .btn, .actions button { margin-right: 0.5rem; padding: 0.5rem 1rem; }
         .btn-edit { background-color: var(--blue-color); color: #fff; }
         .btn-delete { background-color: var(--red-color); color: #fff; }
 
+        /* NEW: Styles for flash messages */
+        .flash-container {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        .flash-success {
+            background-color: rgba(46, 204, 113, 0.3);
+            border: 1px solid var(--green-color);
+            color: var(--primary-text);
+        }
+        
         @media (max-width: 768px) {
             body { padding: 0; }
             .navbar { flex-direction: column; padding: 1rem; border-radius: 0; }
@@ -134,6 +81,14 @@
     </nav>
 
     <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-container flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <div class="header">
             <h1>Manage Menu</h1>
             <a href="{{ url_for('add_menu_item') }}" class="btn btn-primary">+ Add New Item</a>
@@ -141,13 +96,7 @@
         <div class="table-container">
             <table>
                 <thead>
-                    <tr>
-                        <th>Item ID</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Category</th>
-                        <th>Actions</th>
-                    </tr>
+                    <tr><th>Item ID</th><th>Name</th><th>Price</th><th>Category</th><th>Actions</th></tr>
                 </thead>
                 <tbody>
                     {% for item in menu_items %}
